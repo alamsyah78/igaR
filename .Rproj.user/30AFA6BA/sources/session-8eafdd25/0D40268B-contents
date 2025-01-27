@@ -1,0 +1,95 @@
+# install paket
+renv::install(c("devtools", "roxygen2", "testthat", "usethis"))
+
+# aktivasi paket
+library(devtools)
+library(roxygen2)
+library(usethis)
+library(testthat)
+renv::snapshot()
+renv::status()
+
+
+
+
+# membuat lisensi paket
+usethis::use_gpl3_license()
+
+
+# tes paket
+library(igaR)
+
+pkgbuild::find_rtools() #cek Rtools sudah terpasang
+install.packages("devtools") #install paket devtools
+devtools::check()  # Periksa apakah semua dependensi terpenuhi
+
+# praktik fungsi read_regulation
+source("C:/Users/ThinkPad P52s/Documents/igaR/igaR/R/read_regulation.R")
+# Membaca file teks
+yanlik <- read_regulation("C:/Users/ThinkPad P52s/Documents/igaR/example.txt")
+cat(yanlik, sep = "\n") #cetak dengan fungsi cat
+yanlik_token <- tokenize_text(yanlik) #tokenisasi
+yanlik_ig <- extract_ig_components(yanlik_token) #ekstrak komponen IG
+visualize_ig(yanlik_ig) #visualisasi
+cat(yanlik_token, sep = "\n")
+
+#visualisasi
+visualize_aim(yanlik_ig) #visualisasi hanya komponen `Aim`
+visualize_attribute(yanlik_ig) #visualisasi hanya `Attribute`.
+visualize_attribute_aim(yanlik_ig) #visualisasi `Attribute` dan `Aim`
+visualize_specific_attribute(yanlik_ig, attribute = "gubernur")
+
+#create wordcloud
+generate_wordcloud(yanlik_ig, min_freq = 2, stopwords = TRUE)
+generate_wordcloud(yanlik_ig, min_freq = 2, stopwords = FALSE)
+
+# mencari attribute
+pattern <- "\\b(presiden|gubernur|menteri|melaksanakan)\\b" # Regex untuk Attribute
+extract_context(text = "yanlik_ig", component = "Attribute", pattern = pattern)
+
+#statistik
+stats_attribute <- net_stats(yanlik_ig, component = "Attribute")
+print(stats_attribute)
+stats_aim <- net_stats(yanlik_ig, component = "Aim")
+print(stats_aim)
+
+
+
+# instalasi paket igaR ke lingkungan lokal
+getwd()
+devtools::install()
+library(igaR)
+
+#membuat panduan pengguna igaR
+usethis::use_vignette("penggunaan-igaR")
+devtools::build_vignettes() #membuat file PDF permanen
+
+# menghapus konflik dengan global environment
+rm(list = c("extract_ig_components", "net_stats", "read_regulation",
+            "tokenize_text", "visualize_aim", "visualize_attribute", "visualize_ig"))
+
+# menjalankan perintah dan membuat dokumentasi fungsi otomatis
+devtools::document()
+
+#detect sentence pattern
+patterns <- list(
+  Attribute = "\\b(presiden|gubernur|menteri)\\b",
+  Deontic = "\\b(harus|dapat|wajib|tidak boleh)\\b",
+  Aim = "\\b(menetapkan|mengelola|menyusun)\\b",
+  Object = "\\b(Rencana Pembangunan Nasional|program daerah)\\b"
+)
+detect_sentence_patterns("menteri", patterns)
+
+#upload igaR to GitHub
+devtools::install_github("alamsyah78/igaR")
+
+
+
+
+
+
+
+
+
+
+

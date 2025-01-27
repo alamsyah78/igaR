@@ -1,0 +1,25 @@
+Package: igaR
+Type: Package
+Title: Analisis teks dengan Institutional Grammar 2.0
+Version: 0.1.0
+Authors@R: c(
+    person(
+      "Adji", "Alamsyah",
+      email = "alamsyah78@fisip.unsri.ac.id",
+      role = c("aut", "cre")
+    )
+  )
+Description: Paket igaR dikembangkan sebagai alat untuk menganalisis data dengan kerangka pikir Institutional Grammar 2.0.
+License: GPL (>= 3)
+Encoding: UTF-8
+LazyData: true
+Imports:
+    tidyverse,
+    stringr,
+    quanteda,
+    igraph
+RoxygenNote: 7.3.2
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

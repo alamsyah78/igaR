@@ -1,0 +1,140 @@
+---
+title: "igaR: Institusional Grammar 2.0 dengan R"
+author: "Adji Alamsyah"
+output: pdf_document
+vignette: >
+  %\VignetteIndexEntry{Penggunaan igaR}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+# Pendahuluan
+
+Paket `igaR` adalah alat analisis yang dirancang untuk membantu pengguna memahami teks regulasi dengan menggunakan pendekatan *Institutional Grammar 2.0* (IG 2.0). Pendekatan ini memungkinkan dekomposisi aturan menjadi berbagai komponen seperti aktor (*Attribute*), tindakan (*Aim*), objek (*Object*), kondisi aktivasi (*ActivationCondition*), dan lainnya. Dengan menggunakan `igaR`, pengguna dapat:
+
+1.  Mengekstrak komponen IG 2.0 dalam regulasi secara otomatis.
+
+2.  Memvisualisasikan jejaring hubungan antar komponen IG 2.0.
+
+3.  Menghitung statistik jejaring beragam komponen untuk memahami struktur regulasi lebih dalam.
+
+Fitur utama dari paket `igaR` meliputi:
+
+-   Ekstraksi otomatis komponen **Institutional Grammar (IG)**.
+
+-   Visualisasi jejaring komponen regulasi.
+
+-   Perhitungan statistik jejaring seperti kepadatan, centrality, dan ukuran komponen terhubung.
+
+Fitur-fitur lain akan dikembangkan sesuai dengan perkembangan pemikiran dan praktik-praktik riset menggunakan IG 2.0.
+
+# Instalasi
+
+Paket **`igaR`** dapat diinstal dari direktori lokal atau dari GitHub jika paket telah dipublikasikan secara daring. Sebagai gambaran, untuk menginstal melalui direktori lokal, gunakan perintah:
+
+**Dari direktori lokal**:
+
+```{r setup}
+library(igaR)
+```
+
+Paket `igaR` juga bisa diinstall dari GitHub. Sampai tulisan ini dibuat, paket `igaR` masih dalam proses pengembangan dan pemenuhan beberapa syarat dan ketentuan publikasi paket di CRAN. 
+
+Setelah instalasi selesai, Anda dapat memuat paket dengan:
+
+```{r}
+library(igaR)
+```
+
+# Struktur Fungsi Utama
+
+Paket **`igaR`** menyediakan beberapa fungsi utama yang dirancang untuk menganalisis teks regulasi. Berikut adalah deskripsi singkat untuk masing-masing fungsi:
+
+1.  **`tokenize_text()`**:
+
+    -   Fungsi ini digunakan untuk memecah teks menjadi token individual (kata-kata atau elemen teks lainnya).
+
+    -   **Input**: String teks regulasi.
+
+    -   **Output**: Vektor token.
+
+2.  **`extract_ig_components()`**:
+
+    -   Fungsi ini mengekstrak komponen IG seperti **Attribute**, **Aim**, **Object**, dan lainnya dari token yang diberikan.
+
+    -   **Input**: Vektor token.
+
+    -   **Output**: List yang berisi elemen-elemen komponen IG.
+
+3.  **`visualize_ig()`**:
+
+    -   Fungsi ini digunakan untuk memvisualisasikan jejaring komponen IG secara keseluruhan.
+
+    -   **Input**: Hasil dari fungsi **`extract_ig_components()`**.
+
+    -   **Output**: Grafik jejaring.
+
+4.  **`net_stats()`**:
+
+    -   Fungsi ini menghitung statistik jejaring untuk kategori tertentu, misalnya **Attribute** atau **Aim**.
+
+    -   **Input**: Hasil dari **`extract_ig_components()`** dan nama kategori.
+
+    -   **Output**: Statistik jejaring dalam bentuk list.
+
+# Panduan Penggunaan
+
+Panduan penggunaan ini memberikan langkah-langkah rinci untuk memanfaatkan paket **`igaR`**:
+
+## Langkah 1: Tokenisasi Teks
+
+Gunakan fungsi **`tokenize_text()`** untuk memecah teks regulasi menjadi token:
+
+```{r}
+text <- "Gubernur harus menetapkan rencana sesuai dengan aturan."
+tokens <- tokenize_text(text)
+print(tokens)
+```
+
+## Langkah 2: Ekstraksi Komponen IG
+
+Setelah teks diubah menjadi token, gunakan fungsi **`extract_ig_components()`** untuk mengekstrak komponen IG:
+
+```{r}
+ig_data <- extract_ig_components(tokens)
+print(ig_data)
+```
+
+## Langkah 3: Visualisasi Jejaring
+
+Gunakan fungsi visualize_ig() untuk memvisualisasikan hubungan antar komponen IG:
+
+```{r}
+visualize_ig(ig_data)
+```
+
+## Langkah 4: Statistik Jejaring
+
+Gunakan fungsi net_stats() untuk menghitung statistik jejaring:
+
+```{r}
+stats <- net_stats(ig_data, component = "Attribute")
+print(stats)
+```
+
+# Referensi
+
+Paket `igaR` dikembangkan berdasarkan kerangka kerja Institutional Grammar 2.0, yang dikembangkan oleh Frantz dan Siddiqi (2022). Referensi utama:
+
+Frantz, C. K., and Siddiki, S., (2022). *"Institutional Grammar: Foundations and Applications for Institutional Analysis."* Cham, Swizerland: Palgrave MacMillan.
+
+# Informasi Tambahan
+
+Paket `igaR` dibuat dan dikembangkan [Adji Alamsyah](https://scholar.google.com/citations?hl=id&user=uYIuLuMAAAAJ "Profil Google Scholars") (Dosen di Departemen Administrasi Publik, Fakultas Ilmu Sosial Ilmu Politik, Universitas Sriwijaya). Paket ini dikembangkan dengan lisensi GPL-3. Email: [alamsyah78\@fisip.unsri.ac.id](mailto:alamsyah78@fisip.unsri.ac.id){.email}

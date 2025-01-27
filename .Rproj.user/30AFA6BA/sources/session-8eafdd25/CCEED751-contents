@@ -1,0 +1,55 @@
+#' Visualisasi Attribute Tertentu
+#'
+#' Fungsi ini membuat jejaring hanya untuk token yang memiliki `Attribute` tertentu.
+#'
+#' @param ig_data List hasil dari fungsi `extract_ig_components`.
+#' @param attribute Nama `Attribute` yang ingin divisualisasikan (contoh: "Presiden").
+#' @return Grafik jejaring untuk `Attribute` yang dipilih.
+#'
+#' @examples
+#' tokens <- c("Presiden", "Gubernur", "menetapkan", "mengelola", "Rencana")
+#' ig_data <- extract_ig_components(tokens)
+#' visualize_specific_attribute(ig_data, attribute = "Presiden")
+#'
+#' @export
+visualize_specific_attribute <- function(ig_data, attribute) {
+  # Periksa apakah igraph sudah terinstal
+  if (!requireNamespace("igraph", quietly = TRUE)) {
+    stop("Paket 'igraph' belum terinstal. Instal dengan `install.packages('igraph')`.")
+  }
+
+  # Ambil komponen Attribute dan Aim
+  attribute_tokens <- ig_data$Attribute
+  aim_tokens <- ig_data$Aim
+
+  # Periksa jika tidak ada data di Attribute atau Aim
+  if (length(attribute_tokens) == 0) {
+    stop("Tidak ada token `Attribute` untuk divisualisasikan.")
+  }
+  if (length(aim_tokens) == 0) {
+    stop("Tidak ada token `Aim` untuk divisualisasikan.")
+  }
+
+  # Filter hanya Attribute yang sesuai
+  if (!attribute %in% attribute_tokens) {
+    stop(paste("Attribute yang diminta (", attribute, ") tidak ditemukan dalam data.", sep = ""))
+  }
+
+  # Buat daftar edge hanya untuk Attribute tertentu
+  edges <- cbind(rep(attribute, length(aim_tokens)), aim_tokens)
+  edge_list <- as.matrix(edges)
+
+  # Buat graph
+  graph <- igraph::graph_from_edgelist(edge_list, directed = TRUE)
+
+  # Visualisasi graph
+  plot(
+    graph,
+    vertex.size = 15,
+    vertex.color = c("lightblue", rep("lightgreen", length(aim_tokens))),
+    vertex.label.color = "black",
+    vertex.label.cex = 0.8,
+    edge.arrow.size = 0.5,
+    main = paste("Jejaring untuk Attribute:", attribute)
+  )
+}
